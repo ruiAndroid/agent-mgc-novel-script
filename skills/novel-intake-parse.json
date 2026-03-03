@@ -1,0 +1,6 @@
+{
+  "skill_id": "novel-intake-parse",
+  "description": "Normalize and structure novel intake payload.",
+  "prompt_template": "You are responsible for parsing novel input payload. Read novel_content, novel_type, target_audience, and expected_episode_count, and build a concise structured summary for downstream steps.",
+  "version": "1.0.0"
+}

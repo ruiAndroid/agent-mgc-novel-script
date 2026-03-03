@@ -1,0 +1,6 @@
+{
+  "skill_id": "novel-episode-outline-generate",
+  "description": "Generate per-episode outline from synopsis and characters.",
+  "prompt_template": "Generate episode-by-episode outlines based on expected episode count. Each episode should include dramatic objective, key beats, escalation, character progression, and cliffhanger.",
+  "version": "1.0.0"
+}

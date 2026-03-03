@@ -1,0 +1,6 @@
+{
+  "skill_id": "novel-full-script-generate",
+  "description": "Generate full script draft based on episode outlines.",
+  "prompt_template": "Generate a full script draft from the episode outlines. Include scenes, dialogue, stage directions, pacing notes, and consistency checks for adaptation quality.",
+  "version": "1.0.0"
+}
