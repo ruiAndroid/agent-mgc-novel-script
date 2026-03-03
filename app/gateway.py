@@ -7,21 +7,21 @@ class GatewayClient:
     def __init__(
         self,
         base_url: str,
-        token: str,
-        anthropic_version: str,
+        auth_token: str,
+        auth_scheme: str,
         timeout_seconds: int,
     ) -> None:
         self.base_url = base_url.rstrip("/")
-        self.token = token.strip()
-        self.anthropic_version = anthropic_version.strip()
+        self.auth_token = auth_token.strip()
+        self.auth_scheme = auth_scheme.strip() or "Bearer"
         self.timeout = httpx.Timeout(timeout_seconds)
 
     def is_configured(self) -> bool:
-        return bool(self.token)
+        return bool(self.base_url)
 
     async def list_models(self) -> Dict[str, Any]:
-        self._assert_token()
-        headers = {"Authorization": f"Bearer {self.token}"}
+        self._assert_base_url()
+        headers = self._build_headers()
         endpoint = f"{self.base_url}/models"
         async with httpx.AsyncClient(timeout=self.timeout) as client:
             response = await client.get(endpoint, headers=headers)
@@ -37,12 +37,9 @@ class GatewayClient:
         max_tokens: int,
         temperature: Optional[float] = None,
     ) -> Tuple[str, Optional[Dict[str, Any]]]:
-        self._assert_token()
-        headers = {
-            "Authorization": f"Bearer {self.token}",
-            "anthropic-version": self.anthropic_version,
-            "Content-Type": "application/json",
-        }
+        self._assert_base_url()
+        headers = self._build_headers()
+        headers["Content-Type"] = "application/json"
         payload: Dict[str, Any] = {
             "model": model,
             "messages": [{"role": "user", "content": prompt}],
@@ -64,9 +61,14 @@ class GatewayClient:
         usage = body.get("usage")
         return text, usage if isinstance(usage, dict) else None
 
-    def _assert_token(self) -> None:
-        if not self.token:
-            raise RuntimeError("GATEWAY_TOKEN is not configured.")
+    def _assert_base_url(self) -> None:
+        if not self.base_url:
+            raise RuntimeError("LLM_SERVICE_BASE_URL is not configured.")
+
+    def _build_headers(self) -> Dict[str, str]:
+        if not self.auth_token:
+            return {}
+        return {"Authorization": f"{self.auth_scheme} {self.auth_token}"}
 
     def _format_gateway_error(self, response: httpx.Response) -> str:
         raw = response.text.strip()

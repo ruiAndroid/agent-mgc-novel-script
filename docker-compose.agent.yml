@@ -1,0 +1,24 @@
+services:
+  mgc-novel-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mgc-novel-agent
+    restart: unless-stopped
+    env_file:
+      - .env.production
+    environment:
+      - APP_ENV_FILE=/app/.env.production
+      - APP_HOST=0.0.0.0
+      - APP_PORT=8110
+      - SKILLS_DIR=/app/skills
+      - ZEROCLAW_CONTROL_API_BASE_URL=${ZEROCLAW_CONTROL_API_BASE_URL:-http://fun-ai-claw-api:8080}
+    ports:
+      - "8110:8110"
+    networks:
+      - zeroclaw-net
+
+networks:
+  zeroclaw-net:
+    external: true
+    name: ${ZEROCLAW_DOCKER_NETWORK:-fun-ai-claw-net}

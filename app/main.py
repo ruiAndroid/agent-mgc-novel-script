@@ -13,9 +13,9 @@ app = FastAPI(
 )
 
 gateway_client = GatewayClient(
-    base_url=settings.gateway_base_url,
-    token=settings.gateway_token,
-    anthropic_version=settings.gateway_anthropic_version,
+    base_url=settings.llm_service_base_url,
+    auth_token=settings.llm_service_auth_token,
+    auth_scheme=settings.llm_service_auth_scheme,
     timeout_seconds=settings.request_timeout_seconds,
 )
 skill_registry = load_skills(settings.skills_dir)
@@ -29,9 +29,15 @@ async def health() -> dict:
         "agent_id": settings.agent_id,
         "workflow_id": settings.workflow_id,
         "skills_count": len(skill_registry),
-        "gateway_configured": gateway_client.is_configured(),
-        "gateway_base_url": settings.gateway_base_url,
+        "llm_service_configured": gateway_client.is_configured(),
+        "llm_service_base_url": settings.llm_service_base_url,
+        "llm_service_source": settings.llm_service_source,
     }
+
+
+@app.get("/v1/health")
+async def health_v1() -> dict:
+    return await health()
 
 
 @app.get("/v1/models")
