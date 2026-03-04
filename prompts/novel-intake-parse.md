@@ -1,1 +1,0 @@
-﻿请读取 script_content、script_type、target_audience、expected_episode_count，并输出结构化输入摘要。必须包含：内容摘要、剧本类型、目标受众、期望集数、改编注意事项。
