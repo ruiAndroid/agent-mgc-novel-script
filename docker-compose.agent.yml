@@ -12,7 +12,6 @@ services:
       - APP_HOST=0.0.0.0
       - APP_PORT=8110
       - SKILLS_DIR=/app/skills
-      - ZEROCLAW_CONTROL_API_BASE_URL=${ZEROCLAW_CONTROL_API_BASE_URL:-http://fun-ai-claw-api:8080}
     ports:
       - "8110:8110"
     networks:

@@ -14,6 +14,7 @@ app = FastAPI(
 
 gateway_client = GatewayClient(
     base_url=settings.llm_service_base_url,
+    api_style=settings.llm_service_api_style,
     auth_token=settings.llm_service_auth_token,
     auth_scheme=settings.llm_service_auth_scheme,
     timeout_seconds=settings.request_timeout_seconds,
@@ -32,6 +33,7 @@ async def health() -> dict:
         "llm_service_configured": gateway_client.is_configured(),
         "llm_service_base_url": settings.llm_service_base_url,
         "llm_service_source": settings.llm_service_source,
+        "llm_service_api_style": settings.llm_service_api_style,
     }
 
 

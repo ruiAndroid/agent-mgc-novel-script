@@ -6,9 +6,10 @@ Independent DreamWorks novel-to-script agent application.
 
 - Single-purpose agent: novel -> script pipeline
 - Skills are externalized as JSON files under `skills/`
-- Uses framework-level LLM service protocol (typically ZeroClaw):
-  - `GET /v1/models`
-  - `POST /v1/messages`
+- Uses framework-level LLM service protocol (typically ZeroClaw in Docker):
+  - Preferred: `POST /v1/chat/completions`
+  - Compatible fallback: `POST /v1/messages`
+  - Optional: `GET /v1/models`
 - Built-in 5-step business flow:
   - `novel-intake-parse` (local deterministic summary)
   - `novel-story-synopsis-generate`
@@ -29,23 +30,22 @@ cp .env.example .env.production
 Edit `.env.production` and set at least:
 
 ```env
-ZEROCLAW_CONTROL_API_BASE_URL=http://fun-ai-claw-api:8080
-ZEROCLAW_INSTANCE_NAME=mgc-novel-agent
+LLM_SERVICE_BASE_URL=http://<zeroclaw-host-or-container-ip>:<gateway-host-port>/v1
+LLM_SERVICE_API_STYLE=auto
 ```
 
-Then the app automatically resolves:
+Or:
 
-`{ZEROCLAW_CONTROL_API_BASE_URL}/fun-claw/ui-controller/{resolved-instance-id}/v1`
+```env
+ZEROCLAW_LLM_PROXY_BASE_URL=http://<your-llm-proxy>/v1
+```
 
 Optional:
 
 ```env
-# Explicit override, has higher priority than ZEROCLAW_* variables.
+# Explicit preferred key
 LLM_SERVICE_BASE_URL=http://<custom-llm-service>/v1
-# If you already know UUID, it has higher priority than instance name lookup.
-ZEROCLAW_INSTANCE_ID=<your-claw-instance-uuid>
-# Timeout for auto lookup via GET /v1/instances
-ZEROCLAW_CONTROL_API_TIMEOUT_SECONDS=3
+LLM_SERVICE_API_STYLE=chat_completions
 ```
 
 Optional (only if your ZeroClaw gateway has `ZEROCLAW_API_KEY` enabled):
@@ -54,6 +54,12 @@ Optional (only if your ZeroClaw gateway has `ZEROCLAW_API_KEY` enabled):
 LLM_SERVICE_AUTH_TOKEN=replace-with-token
 LLM_SERVICE_AUTH_SCHEME=Bearer
 ```
+
+`LLM_SERVICE_API_STYLE` values:
+
+- `auto` (recommended): try `/chat/completions`, fallback to `/messages`
+- `chat_completions`: force `/chat/completions`
+- `messages`: force `/messages`
 
 Skill files:
 
@@ -145,10 +151,14 @@ curl http://127.0.0.1:8110/health
 
 `llm_service_source` should be one of:
 - `explicit`
-- `claw-api-proxy:instance-id`
-- `claw-api-proxy:instance-name(...)`
+- `zeroclaw-llm-proxy`
+
+Health response also includes `llm_service_api_style` for troubleshooting.
 
 Important: in current `fun-ai-claw-plane`, zeroclaw containers are started with
 `<image> gateway ...`. Your FastAPI agent should run as a separate container service
 and call the framework LLM service URL. Keep vendor tokens in framework/runtime side,
 not in agent business code.
+
+Note: `ZEROCLAW_CONTROL_API_BASE_URL` + `/fun-claw/ui-controller/{instanceId}` is UI proxy path,
+not LLM API path. Do not use it as `LLM_SERVICE_BASE_URL`.
