@@ -1,6 +1,0 @@
-{
-  "skill_id": "novel-character-profile-generate",
-  "description": "Generate character bible for screenplay adaptation.",
-  "prompt_template": "Generate core character profiles including objective, motivation, conflict, relation map, growth arc, dialogue style, and visual tags suitable for production.",
-  "version": "1.0.0"
-}

@@ -1,6 +1,6 @@
-{
-  "skill_id": "novel-intake-parse",
-  "description": "Normalize and structure novel intake payload.",
-  "prompt_template": "You are responsible for parsing novel input payload. Read novel_content, novel_type, target_audience, and expected_episode_count, and build a concise structured summary for downstream steps.",
-  "version": "1.0.0"
+﻿{
+    "skill_id":  "novel-intake-parse",
+    "description":  "解析并结构化上游已收集完成的输入参数。",
+    "prompt_template":  "请读取 script_content、script_type、target_audience、expected_episode_count，并输出结构化输入摘要。必须包含：内容摘要、剧本类型、目标受众、期望集数、改编注意事项。",
+    "version":  "1.0.0"
 }

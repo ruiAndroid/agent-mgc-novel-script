@@ -1,33 +1,40 @@
-{
+﻿{
   "agent_id": "mgc-novel-to-script",
   "mode": "managed",
   "runtime": "zeroclaw",
-  "entry_skill": "novel-to-script-pipeline",
-  "workflow_id": "novel-to-script-pipeline",
+  "entry_skill": "novel-to-script-main",
   "skills_dir": "./skills",
   "skills": [
     "novel-intake-parse",
-    "novel-story-synopsis-generate",
-    "novel-character-profile-generate",
-    "novel-episode-outline-generate",
-    "novel-full-script-generate",
-    "novel-to-script-pipeline"
+    "novel-to-script-story-synopsis-generate",
+    "novel-to-script-character-profile-generate",
+    "novel-to-script-episode-outline-generate",
+    "novel-to-script-full-script-generate",
+    "one-line-script-story-synopsis-generate",
+    "one-line-script-character-profile-generate",
+    "one-line-script-episode-outline-generate",
+    "one-line-script-full-script-generate",
+    "novel-to-script-main"
   ],
   "input_schema": {
     "type": "object",
     "required": [
-      "novel_content",
-      "novel_type",
-      "target_audience"
+      "script_content",
+      "script_type",
+      "target_audience",
+      "expected_episode_count"
     ],
     "properties": {
-      "novel_content": {
+      "script_content": {
         "type": "string",
         "minLength": 1
       },
-      "novel_type": {
+      "script_type": {
         "type": "string",
-        "minLength": 1
+        "enum": [
+          "小说转剧本",
+          "一句话剧本"
+        ]
       },
       "target_audience": {
         "type": "string",
@@ -40,4 +47,3 @@
     }
   }
 }
-

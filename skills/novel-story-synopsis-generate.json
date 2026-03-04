@@ -1,6 +1,0 @@
-{
-  "skill_id": "novel-story-synopsis-generate",
-  "description": "Generate adaptation-ready story synopsis.",
-  "prompt_template": "Based on the source novel and target audience, generate a screenplay adaptation synopsis including theme, core premise, main conflict, tone, market hook, and adaptation risks.",
-  "version": "1.0.0"
-}

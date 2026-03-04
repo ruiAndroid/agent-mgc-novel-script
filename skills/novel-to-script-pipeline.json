@@ -1,7 +1,0 @@
-{
-  "skill_id": "novel-to-script-pipeline",
-  "description": "Managed pipeline skill for DreamWorks novel-to-script conversion in ZeroClaw runtime.",
-  "prompt_template": "You are the managed pipeline agent for DreamWorks novel-to-script conversion. Execute the workflow in strict order: (1) novel-intake-parse, (2) novel-story-synopsis-generate, (3) novel-character-profile-generate, (4) novel-episode-outline-generate, (5) novel-full-script-generate. Input fields: novel_content, novel_type, target_audience, expected_episode_count. Return markdown with five top-level sections exactly: # Step 1 Intake, # Step 2 Story Synopsis, # Step 3 Character Profiles, # Step 4 Episode Outline, # Step 5 Full Script Draft. Keep continuity across all steps and do not skip any section.",
-  "version": "1.0.0"
-}
-
