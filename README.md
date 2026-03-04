@@ -8,11 +8,14 @@
 
 - `zeroclaw-agent.manifest.json`
 - `skills/novel-to-script-main.json`
-- `skills/novel-intake-parse.json`
-- `skills/novel-story-synopsis-generate.json`
-- `skills/novel-character-profile-generate.json`
-- `skills/novel-episode-outline-generate.json`
-- `skills/novel-full-script-generate.json`
+- `skills/novel-to-script-story-synopsis-generate.json`
+- `skills/novel-to-script-character-profile-generate.json`
+- `skills/novel-to-script-episode-outline-generate.json`
+- `skills/novel-to-script-full-script-generate.json`
+- `skills/one-line-script-story-synopsis-generate.json`
+- `skills/one-line-script-character-profile-generate.json`
+- `skills/one-line-script-episode-outline-generate.json`
+- `skills/one-line-script-full-script-generate.json`
 
 ## ZeroClaw 挂载与配置
 
@@ -34,18 +37,15 @@ prompt_injection_mode = "full"
 
 - `novel-to-script-main`
 
-该主技能会按固定顺序串联 5 个子技能：输入解析 -> 故事梗概 -> 角色小传 -> 分集大纲 -> 完整剧本草案。
+该主技能会按固定顺序串联 4 个子技能（故事梗概 -> 角色小传 -> 分集大纲 -> 完整剧本草案），输入解析在主技能内完成。
 
 ## 输入字段
 
 必填：
 
-- `novel_content`
-- `novel_type`
+- `script_content`
+- `script_type`
 - `target_audience`
-
-选填：
-
 - `expected_episode_count`
 
 ## 提示词维护（推荐）

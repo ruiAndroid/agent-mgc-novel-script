@@ -1,49 +1,48 @@
 ﻿{
-  "agent_id": "mgc-novel-to-script",
-  "mode": "managed",
-  "runtime": "zeroclaw",
-  "entry_skill": "novel-to-script-main",
-  "skills_dir": "./skills",
-  "skills": [
-    "novel-intake-parse",
-    "novel-to-script-story-synopsis-generate",
-    "novel-to-script-character-profile-generate",
-    "novel-to-script-episode-outline-generate",
-    "novel-to-script-full-script-generate",
-    "one-line-script-story-synopsis-generate",
-    "one-line-script-character-profile-generate",
-    "one-line-script-episode-outline-generate",
-    "one-line-script-full-script-generate",
-    "novel-to-script-main"
-  ],
-  "input_schema": {
-    "type": "object",
-    "required": [
-      "script_content",
-      "script_type",
-      "target_audience",
-      "expected_episode_count"
-    ],
-    "properties": {
-      "script_content": {
-        "type": "string",
-        "minLength": 1
-      },
-      "script_type": {
-        "type": "string",
-        "enum": [
-          "小说转剧本",
-          "一句话剧本"
-        ]
-      },
-      "target_audience": {
-        "type": "string",
-        "minLength": 1
-      },
-      "expected_episode_count": {
-        "type": "integer",
-        "minimum": 1
-      }
-    }
-  }
+    "agent_id":  "mgc-novel-to-script",
+    "mode":  "managed",
+    "runtime":  "zeroclaw",
+    "entry_skill":  "novel-to-script-main",
+    "skills_dir":  "./skills",
+    "skills":  [
+                   "novel-to-script-story-synopsis-generate",
+                   "novel-to-script-character-profile-generate",
+                   "novel-to-script-episode-outline-generate",
+                   "novel-to-script-full-script-generate",
+                   "one-line-script-story-synopsis-generate",
+                   "one-line-script-character-profile-generate",
+                   "one-line-script-episode-outline-generate",
+                   "one-line-script-full-script-generate",
+                   "novel-to-script-main"
+               ],
+    "input_schema":  {
+                         "type":  "object",
+                         "required":  [
+                                          "script_content",
+                                          "script_type",
+                                          "target_audience",
+                                          "expected_episode_count"
+                                      ],
+                         "properties":  {
+                                            "script_content":  {
+                                                                   "type":  "string",
+                                                                   "minLength":  1
+                                                               },
+                                            "script_type":  {
+                                                                "type":  "string",
+                                                                "enum":  [
+                                                                             "小说转剧本",
+                                                                             "一句话剧本"
+                                                                         ]
+                                                            },
+                                            "target_audience":  {
+                                                                    "type":  "string",
+                                                                    "minLength":  1
+                                                                },
+                                            "expected_episode_count":  {
+                                                                           "type":  "integer",
+                                                                           "minimum":  1
+                                                                       }
+                                        }
+                     }
 }
