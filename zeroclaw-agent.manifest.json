@@ -1,0 +1,43 @@
+{
+  "agent_id": "mgc-novel-to-script",
+  "mode": "managed",
+  "runtime": "zeroclaw",
+  "entry_skill": "novel-to-script-pipeline",
+  "workflow_id": "novel-to-script-pipeline",
+  "skills_dir": "./skills",
+  "skills": [
+    "novel-intake-parse",
+    "novel-story-synopsis-generate",
+    "novel-character-profile-generate",
+    "novel-episode-outline-generate",
+    "novel-full-script-generate",
+    "novel-to-script-pipeline"
+  ],
+  "input_schema": {
+    "type": "object",
+    "required": [
+      "novel_content",
+      "novel_type",
+      "target_audience"
+    ],
+    "properties": {
+      "novel_content": {
+        "type": "string",
+        "minLength": 1
+      },
+      "novel_type": {
+        "type": "string",
+        "minLength": 1
+      },
+      "target_audience": {
+        "type": "string",
+        "minLength": 1
+      },
+      "expected_episode_count": {
+        "type": "integer",
+        "minimum": 1
+      }
+    }
+  }
+}
+

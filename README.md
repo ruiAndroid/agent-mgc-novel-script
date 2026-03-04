@@ -1,164 +1,59 @@
 # agent-mgc-novel-script
 
-Independent DreamWorks novel-to-script agent application.
+DreamWorks novel-to-script agent package for ZeroClaw runtime only.
 
-## Features
+This repository supports a single deployment form:
 
-- Single-purpose agent: novel -> script pipeline
-- Skills are externalized as JSON files under `skills/`
-- Uses framework-level LLM service protocol (typically ZeroClaw in Docker):
-  - Preferred: `POST /v1/chat/completions`
-  - Compatible fallback: `POST /v1/messages`
-  - Optional: `GET /v1/models`
-- Built-in 5-step business flow:
-  - `novel-intake-parse` (local deterministic summary)
-  - `novel-story-synopsis-generate`
-  - `novel-character-profile-generate`
-  - `novel-episode-outline-generate`
-  - `novel-full-script-generate`
+- agent runs inside ZeroClaw runtime container
+- LLM provider/model/auth are configured in ZeroClaw `config.toml`
+- this repo only provides skills and workflow manifest
 
-## Quick start
+## Files
 
-```bash
-cd agent-mgc-novel-script
-python -m venv .venv
-. .venv/Scripts/activate
-pip install -r requirements.txt
-cp .env.example .env.production
-```
-
-Edit `.env.production` and set at least:
-
-```env
-LLM_SERVICE_BASE_URL=http://<zeroclaw-host-or-container-ip>:<gateway-host-port>/v1
-LLM_SERVICE_API_STYLE=auto
-```
-
-Or:
-
-```env
-ZEROCLAW_LLM_PROXY_BASE_URL=http://<your-llm-proxy>/v1
-```
-
-Optional:
-
-```env
-# Explicit preferred key
-LLM_SERVICE_BASE_URL=http://<custom-llm-service>/v1
-LLM_SERVICE_API_STYLE=chat_completions
-```
-
-Optional (only if your ZeroClaw gateway has `ZEROCLAW_API_KEY` enabled):
-
-```env
-LLM_SERVICE_AUTH_TOKEN=replace-with-token
-LLM_SERVICE_AUTH_SCHEME=Bearer
-```
-
-`LLM_SERVICE_API_STYLE` values:
-
-- `auto` (recommended): try `/chat/completions`, fallback to `/messages`
-- `chat_completions`: force `/chat/completions`
-- `messages`: force `/messages`
-
-Skill files:
-
+- `zeroclaw-agent.manifest.json`
+- `skills/novel-to-script-pipeline.json`
 - `skills/novel-intake-parse.json`
 - `skills/novel-story-synopsis-generate.json`
 - `skills/novel-character-profile-generate.json`
 - `skills/novel-episode-outline-generate.json`
 - `skills/novel-full-script-generate.json`
 
-Run:
+## ZeroClaw Docker setup
 
-```bash
-uvicorn app.main:app --host 0.0.0.0 --port 8110
+Mount this project into the runtime container, for example:
+
+- host: `/opt/agent-mgc-novel-script`
+- container: `/workspace/agent-mgc-novel-script`
+
+Enable skills in ZeroClaw `config.toml`:
+
+```toml
+[skills]
+open_skills_enabled = true
+open_skills_dir = "/workspace/agent-mgc-novel-script/skills"
+prompt_injection_mode = "full"
 ```
 
-## APIs
+Workflow entry skill:
 
-- `GET /health`
-- `GET /v1/health`
-- `GET /v1/models`
-- `POST /v1/novel-to-script`
+- `novel-to-script-pipeline`
 
-Request example:
+## Input contract
 
-```json
-{
-  "novel_content": "your novel text...",
-  "novel_type": "urban fantasy",
-  "target_audience": "18-30",
-  "expected_episode_count": 12,
-  "model": "claude-sonnet-4-6",
-  "max_tokens": 2048
-}
-```
+Required fields:
 
-## Linux systemd (zeroclaw)
+- `novel_content`
+- `novel_type`
+- `target_audience`
 
-Example unit file:
+Optional field:
 
-```ini
-[Unit]
-Description=agent-mgc-novel-script
-After=network.target
+- `expected_episode_count`
 
-[Service]
-Type=simple
-WorkingDirectory=/opt/agent-mgc-novel-script
-Environment="APP_ENV_FILE=.env.production"
-ExecStart=/opt/agent-mgc-novel-script/.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8110
-Restart=always
-RestartSec=3
+Pipeline output is constrained to 5 sections in order:
 
-[Install]
-WantedBy=multi-user.target
-```
-
-## Docker deploy (with zeroclaw environment)
-
-Build image:
-
-```bash
-docker build -t mgc-novel-agent:latest .
-```
-
-Run as independent service container:
-
-```bash
-docker run -d --name mgc-novel-agent \
-  --restart unless-stopped \
-  --env-file .env.production \
-  -e APP_ENV_FILE=/app/.env.production \
-  -e SKILLS_DIR=/app/skills \
-  -p 8110:8110 \
-  mgc-novel-agent:latest
-```
-
-Or use compose:
-
-```bash
-export ZEROCLAW_DOCKER_NETWORK=fun-ai-claw-net
-docker compose -f docker-compose.agent.yml up -d --build
-```
-
-Check runtime wiring:
-
-```bash
-curl http://127.0.0.1:8110/health
-```
-
-`llm_service_source` should be one of:
-- `explicit`
-- `zeroclaw-llm-proxy`
-
-Health response also includes `llm_service_api_style` for troubleshooting.
-
-Important: in current `fun-ai-claw-plane`, zeroclaw containers are started with
-`<image> gateway ...`. Your FastAPI agent should run as a separate container service
-and call the framework LLM service URL. Keep vendor tokens in framework/runtime side,
-not in agent business code.
-
-Note: `ZEROCLAW_CONTROL_API_BASE_URL` + `/fun-claw/ui-controller/{instanceId}` is UI proxy path,
-not LLM API path. Do not use it as `LLM_SERVICE_BASE_URL`.
+1. Step 1 Intake
+2. Step 2 Story Synopsis
+3. Step 3 Character Profiles
+4. Step 4 Episode Outline
+5. Step 5 Full Script Draft
