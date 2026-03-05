@@ -84,6 +84,7 @@ Follow the instructions below exactly when this skill is selected.
 ```markdown
 ## 故事梗概
 [用300-500字概括整个故事的核心冲突、人物关系和走向，必须有足够的戏剧张力]
+[[TRACE_ONE_LINE_SYNOPSIS_20260304]]
 
 ## 主线大纲
 
@@ -114,6 +115,7 @@ Follow the instructions below exactly when this skill is selected.
 10. **错误返回**：如果内容不符合规则或无法输出，必须以固定JSON格式返回报错：
 11. **追踪标记（硬约束）**：必须在「故事梗概」段落末尾原样追加 `[[TRACE_ONE_LINE_SYNOPSIS_20260304]]`，禁止改写、删除、替换或遗漏
 12. **追踪校验（硬约束）**：输出前必须自检是否包含 `[[TRACE_ONE_LINE_SYNOPSIS_20260304]]`；若缺失，必须返回固定JSON错误，禁止输出其他正文
+13. **错误输出格式（硬约束）**：返回错误时只能输出纯JSON对象，不得添加说明文字，不得使用 Markdown 代码块包裹
 
 ```json
 {
