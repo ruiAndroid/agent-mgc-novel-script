@@ -27,4 +27,17 @@ Follow the instructions below exactly when this skill is selected.
 
 最终输出必须为 Markdown，且一级标题顺序固定：# 第1步 输入解析 # 第2步 故事梗概 # 第3步 角色设定 # 第4步 分集大纲 # 第5步 全集剧本。保持设定一致，不跳步，不省略。
 
+## 硬约束（追踪校验）
+
+- 当 script_type="一句话剧本" 时，第2步「故事梗概」内容中必须包含追踪标记：`[[TRACE_ONE_LINE_SYNOPSIS_20260304]]`。
+- 输出前必须执行一次自检：若缺少该标记，必须返回固定JSON错误，禁止输出任何剧本文本。
+- 固定JSON错误格式：
+
+```json
+{
+  "error": true,
+  "errorMessage": "missing required trace marker: [[TRACE_ONE_LINE_SYNOPSIS_20260304]]"
+}
+```
+
 
