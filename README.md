@@ -7,15 +7,8 @@
 ## 目录
 
 - `zeroclaw-agent.manifest.json`
-- `skills/novel-to-script-main.json`
-- `skills/novel-to-script-story-synopsis-generate.json`
-- `skills/novel-to-script-character-profile-generate.json`
-- `skills/novel-to-script-episode-outline-generate.json`
-- `skills/novel-to-script-full-script-generate.json`
-- `skills/one-line-script-story-synopsis-generate.json`
-- `skills/one-line-script-character-profile-generate.json`
-- `skills/one-line-script-episode-outline-generate.json`
-- `skills/one-line-script-full-script-generate.json`
+- `skills/<skill_id>/SKILL.md`（每个技能一个目录）
+- `scripts/json-skills-to-skill-md.ps1`（JSON 技能迁移脚本）
 
 ## ZeroClaw 挂载与配置
 
@@ -48,22 +41,22 @@ prompt_injection_mode = "full"
 - `target_audience`
 - `expected_episode_count`
 
-## 提示词维护（推荐）
+## 技能格式
 
-建议使用 `md` 维护长提示词，再同步回 `json`：
+当前仓库使用 ZeroClaw 可识别的目录技能格式：
 
-1. 首次导出当前 JSON 提示词到 `prompts/`：
+- `skills/novel-to-script-main/SKILL.md`
+- `skills/novel-to-script-story-synopsis-generate/SKILL.md`
+- `skills/novel-to-script-character-profile-generate/SKILL.md`
+- `skills/novel-to-script-episode-outline-generate/SKILL.md`
+- `skills/novel-to-script-full-script-generate/SKILL.md`
+- `skills/one-line-script-story-synopsis-generate/SKILL.md`
+- `skills/one-line-script-character-profile-generate/SKILL.md`
+- `skills/one-line-script-episode-outline-generate/SKILL.md`
+- `skills/one-line-script-full-script-generate/SKILL.md`
+
+如需从历史 `skills/*.json` 迁移，可执行：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\sync-skill-prompts.ps1 -Mode export
+powershell -ExecutionPolicy Bypass -File .\scripts\json-skills-to-skill-md.ps1 -Overwrite -RemoveSource
 ```
-
-2. 编辑 `prompts/*.md`。
-
-3. 回写到 `skills/*.json` 的 `prompt_template`：
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\sync-skill-prompts.ps1 -Mode build
-```
-
-说明：如果某个 skill JSON 非法，脚本会跳过并提示 `skip invalid json`，避免整批中断。
