@@ -18,6 +18,22 @@ Follow the instructions below exactly when this skill is selected.
 - `target_audience`：`男频` 或 `女频`
 - `expected_episode_count`：正整数
 
+## 输入解析规则（硬约束）
+1. 必须先做字段提取，再做后续路由。
+2. 提取时必须容错以下写法（含可选前缀 `-` / `*` / `>`）：
+   - `script_type=...` 或 `script_type: ...`
+   - `script_content=...` 或 `script_content: ...`
+   - `target_audience=...` 或 `target_audience: ...`
+   - `expected_episode_count=...` 或 `expected_episode_count: ...`
+3. 键名大小写不敏感；允许同义键并归一化：
+   - `scriptType` -> `script_type`
+   - `scriptContent` -> `script_content`
+   - `targetAudience` -> `target_audience`
+   - `episodeCount` / `expectedEpisodeCount` -> `expected_episode_count`
+4. 当 `script_type` 缺失但文本明确包含“一句话剧本”或“小说转剧本”时，可据此推断 `script_type`。
+5. 当 `script_content` 缺失时，允许将“去除参数行后的剩余正文”作为 `script_content`。
+6. 仅在容错提取完成后仍缺字段时，才返回错误 JSON。
+
 ## 路由规则
 1. 当 `script_type=小说转剧本` 时，子技能顺序必须是：
    - `novel-to-script-story-synopsis-generate`

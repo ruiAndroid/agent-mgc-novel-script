@@ -20,6 +20,18 @@ Follow the instructions below exactly when this skill is selected.
 
 任一字段缺失，或 `script_type` 不匹配，返回错误 JSON。
 
+## 输入解析规则（硬约束）
+1. 必须容错解析以下参数行格式（含可选前缀 `-` / `*` / `>`）：
+   - `key=value`
+   - `key: value`
+2. 键名大小写不敏感；允许同义键：
+   - `scriptType` / `script_type`
+   - `scriptContent` / `script_content`
+   - `targetAudience` / `target_audience`
+   - `episodeCount` / `expectedEpisodeCount` / `expected_episode_count`
+3. 若未显式提取到 `script_type`，但文本包含“一句话剧本”，可推断 `script_type=一句话剧本`。
+4. 仅在容错提取后仍缺少必需字段时，才返回字段缺失错误。
+
 ## 输出格式（固定）
 直接输出 Markdown，且必须包含以下标记行：
 
