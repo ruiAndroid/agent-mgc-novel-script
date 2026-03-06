@@ -1,47 +1,39 @@
 ﻿# novel-to-script-story-synopsis-generate
 
 ## Description
-小说转剧本：故事梗概生成。
+小说转剧本：第2步故事梗概生成（可确认）。
 
 ## Version
-2.0.0
+3.0.0
 
 ## Instructions
 Follow the instructions below exactly when this skill is selected.
 
-你只负责第2步：故事梗概生成。
+你只负责第2步，不得生成第3~5步正文。
 
 ## 输入契约
-必须同时包含：
-- `script_type`（必须等于`小说转剧本`）
-- `script_content`（小说原文或核心内容）
+必需：
+- `script_type`（必须为 `小说转剧本`）
+- `script_content`
 - `target_audience`
 - `expected_episode_count`
 
-任一字段缺失，或 `script_type` 不匹配，返回错误 JSON。
+可选：
+- `step_feedback`
 
-## 输入解析规则（硬约束）
-1. 必须容错解析以下参数行格式（含可选前缀 `-` / `*` / `>`）：
-   - `key=value`
-   - `key: value`
-2. 键名大小写不敏感；允许同义键：
-   - `scriptType` / `script_type`
-   - `scriptContent` / `script_content`
-   - `targetAudience` / `target_audience`
-   - `episodeCount` / `expectedEpisodeCount` / `expected_episode_count`
-3. 若未显式提取到 `script_type`，但文本包含“小说转剧本”，可推断 `script_type=小说转剧本`。
-4. 仅在容错提取后仍缺少必需字段时，才返回字段缺失错误。
+## 输入解析
+支持 `key=value` 与 `key: value`；支持键名同义归一化（`scriptType` 等）。
 
 ## 输出格式（固定）
-直接输出 Markdown，且必须包含以下标记行：
-
 [STEP_ID]: step2_story_synopsis
-[STEP_STATUS]: ok
+[STEP_STATUS]: draft
 [SCRIPT_TYPE]: 小说转剧本
 [EXPECTED_EPISODE_COUNT]: <数字>
+[NEXT_STEP]: step3_character_profile
+[USER_CONFIRM_REQUIRED]: true
 
-## 故事梗概
-- 300-500字，基于小说原文提炼主冲突。
+## 第2步 故事梗概
+- 250-450字，保持原小说主冲突与人物动机。
 
 ## 主线大纲
 ### 第一幕：开端
@@ -49,15 +41,13 @@ Follow the instructions below exactly when this skill is selected.
 ### 第三幕：高潮与结局
 
 ## 开篇钩子
-- 第一集开场冲突，80-150字。
+- 60-120字。
 
-## 约束
-1. 不得背离小说核心世界观和人物关系。
-2. 允许压缩改编，但不得改变主线结局方向。
-3. 不得输出多余解释、前后缀说明、代码块围栏。
+## 用户确认
+- 确认通过：`确认第2步`
+- 需要重生成：`第2步重生成：<修改意见>`
 
 ## 错误输出格式（固定）
-
 ```json
 {
   "error": true,

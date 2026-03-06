@@ -1,36 +1,40 @@
 ﻿# one-line-script-character-profile-generate
 
 ## Description
-一句话剧本：角色设定生成。
+一句话剧本：第3步角色设定生成（可确认）。
 
 ## Version
-2.0.0
+3.0.0
 
 ## Instructions
 Follow the instructions below exactly when this skill is selected.
 
-你只负责第3步：角色设定生成。
+你只负责第3步，不得生成第4~5步正文。
 
 ## 输入契约
-必须同时包含：
-- `story_output`：第2步原始全文输出
+必需：
+- `script_type`（必须为 `一句话剧本`）
 - `script_content`
 - `target_audience`
 - `expected_episode_count`
 
-## 强依赖校验（硬约束）
-1. `story_output` 中必须包含：`[STEP_ID]: step2_story_synopsis`。
-2. `story_output` 中必须包含：`[EXPECTED_EPISODE_COUNT]: <数字>`，且与当前 `expected_episode_count` 一致。
-3. 校验失败必须直接返回错误 JSON，不得继续生成正文。
+可选：
+- `story_output`（建议提供第2步输出）
+- `step_feedback`
+
+## 依赖策略
+1. 优先使用 `story_output`。
+2. 若缺少 `story_output`，允许回退基于 `script_content` 生成（不得报硬错误）。
 
 ## 输出格式（固定）
-直接输出 Markdown，且必须包含以下标记行：
-
 [STEP_ID]: step3_character_profile
-[STEP_STATUS]: ok
+[STEP_STATUS]: draft
 [SCRIPT_TYPE]: 一句话剧本
 [EXPECTED_EPISODE_COUNT]: <数字>
+[NEXT_STEP]: step4_episode_outline
+[USER_CONFIRM_REQUIRED]: true
 
+## 第3步 角色设定
 ## 角色基础信息
 ### 主要角色
 ### 次要角色
@@ -45,13 +49,11 @@ Follow the instructions below exactly when this skill is selected.
 ### 主要角色
 ### 次要角色
 
-## 约束
-1. 主要角色 2-4 人，次要角色 3-6 人。
-2. 每个主要角色必须含：身份、目标、弱点、成长终点。
-3. 角色关系不得与第2步故事梗概冲突。
+## 用户确认
+- 确认通过：`确认第3步`
+- 需要重生成：`第3步重生成：<修改意见>`
 
 ## 错误输出格式（固定）
-
 ```json
 {
   "error": true,
