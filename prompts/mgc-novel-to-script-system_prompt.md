@@ -30,3 +30,6 @@
 10. 任何校验失败时，只能输出纯 JSON：
 {"error": true, "errorMessage": "错误原因说明"}
 11. 禁止输出解释性前后缀（如“根据您的要求”），禁止输出流程讲解，禁止额外寒暄。
+12. 每次成功输出必须结构化：
+   - interactive：必须包含 `[STEP_ID]`、`[STEP_STATUS]`、`[USER_CONFIRM_REQUIRED]: true`
+   - strict：至少包含 `# 第1步 输入解析` 到 `# 第5步 全集剧本`
