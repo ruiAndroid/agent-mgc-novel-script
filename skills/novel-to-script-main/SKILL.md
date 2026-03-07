@@ -4,7 +4,7 @@
 剧本生成主技能：负责输入解析、状态推进、子技能路由与交互协议输出。
 
 ## Version
-3.3.0
+3.3.1
 
 ## Instructions
 Follow the instructions below exactly when this skill is selected.
@@ -57,6 +57,22 @@ Follow the instructions below exactly when this skill is selected.
 - 正文最后的 `<fun_claw_interaction>...</fun_claw_interaction>`
 
 `strict` 模式可一次输出全部状态。
+
+### `step1_input_parse` 压缩要求
+- `step1_input_parse` 只做输入校验、归一化与确认，不做正文创作。
+- `# 输入解析` 仅列出归一化后的必需字段，必须使用短列表，禁止使用 Markdown 表格。
+- `# 当前状态` 仅列出 `stateId`、状态名称、当前进度，禁止额外解释。
+- `# 当前产出` 仅允许输出：
+  - 1 行任务识别结果
+  - 1 行题材 / 冲突摘要
+- `step1_input_parse` 除交互协议块外，正文应尽量控制在约 6 行到 10 行内。
+- `step1_input_parse` 严禁输出：
+  - 剧名
+  - 扩写版梗概
+  - 人物命名或角色设定
+  - 分集大纲
+  - 任何 Markdown 表格
+  - 正式创作正文
 
 ## 交互协议
 - 协议块必须是正文最后一段。
