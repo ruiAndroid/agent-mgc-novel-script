@@ -16,33 +16,7 @@
                    "novel-to-script-main"
                ],
     "input_schema":  {
-                         "type":  "object",
-                         "required":  [
-                                          "script_content",
-                                          "script_type",
-                                          "target_audience",
-                                          "expected_episode_count"
-                                      ],
-                         "properties":  {
-                                            "script_content":  {
-                                                                   "type":  "string",
-                                                                   "minLength":  1
-                                                               },
-                                            "script_type":  {
-                                                                "type":  "string",
-                                                                "enum":  [
-                                                                             "小说转剧本",
-                                                                             "一句话剧本"
-                                                                         ]
-                                                            },
-                                            "target_audience":  {
-                                                                    "type":  "string",
-                                                                    "minLength":  1
-                                                                },
-                                            "expected_episode_count":  {
-                                                                           "type":  "integer",
-                                                                           "minimum":  1
-                                                                       }
-                                        }
+                         "type":  "string",
+                         "minLength":  1
                      }
 }
