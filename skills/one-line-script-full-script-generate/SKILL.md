@@ -4,7 +4,7 @@
 一句话剧本：第5步全集剧本生成（可确认）。
 
 ## Version
-3.0.0
+3.2.0
 
 ## Instructions
 Follow the instructions below exactly when this skill is selected.
@@ -35,14 +35,18 @@ Follow the instructions below exactly when this skill is selected.
 2. 仅在用户明确要求“完整版”时使用 `output_depth=full`。
 
 ## 输出格式（固定）
-[STEP_ID]: step5_full_script
-[STEP_STATUS]: draft
-[SCRIPT_TYPE]: 一句话剧本
-[EXPECTED_EPISODE_COUNT]: <数字>
-[OUTPUT_DEPTH]: lite|full
-[USER_CONFIRM_REQUIRED]: true
+正文必须按以下结构输出，且不得再输出 [STEP_ID] / [STEP_STATUS] / [USER_CONFIRM_REQUIRED] / [NEXT_STEP] 等旧格式字段：
+
+# 当前状态
+- stateId: step5_full_script
+- stateLabel: 全集剧本
+- script_type: 一句话剧本
+- expected_episode_count: <数字>
+- output_depth: lite|full
 
 ## 第5步 全集剧本
+
+
 从 `# 第1集` 到 `# 第N集`。
 
 ## 交互协议（固定）
@@ -56,20 +60,21 @@ Follow the instructions below exactly when this skill is selected.
   "title": "请确认当前全集剧本",
   "actions": [
     {
-      "id": "approve",
+      "id": "confirm",
       "label": "确认并继续",
       "kind": "send",
-      "payload": "workflow_action=approve\nstateId=step5_full_script"
+      "payload": "interaction_action=confirm\nstateId=step5_full_script"
     },
     {
       "id": "revise",
       "label": "提出修改",
       "kind": "prefill",
-      "payload": "workflow_action=revise\nstateId=step5_full_script\nstep_feedback="
+      "payload": "interaction_action=revise\nstateId=step5_full_script\nstep_feedback="
     }
   ]
 }
 </fun_claw_interaction>
+
 ## 错误输出格式（固定）
 ```json
 {

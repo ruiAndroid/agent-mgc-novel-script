@@ -4,7 +4,7 @@
 小说转剧本：第4步分集大纲生成（可确认）。
 
 ## Version
-3.0.0
+3.2.0
 
 ## Instructions
 Follow the instructions below exactly when this skill is selected.
@@ -27,14 +27,17 @@ Follow the instructions below exactly when this skill is selected.
 2. 任一缺失时允许回退生成，不得因缺失直接失败。
 
 ## 输出格式（固定）
-[STEP_ID]: step4_episode_outline
-[STEP_STATUS]: draft
-[SCRIPT_TYPE]: 小说转剧本
-[EXPECTED_EPISODE_COUNT]: <数字>
-[NEXT_STEP]: step5_full_script
-[USER_CONFIRM_REQUIRED]: true
+正文必须按以下结构输出，且不得再输出 [STEP_ID] / [STEP_STATUS] / [USER_CONFIRM_REQUIRED] / [NEXT_STEP] 等旧格式字段：
+
+# 当前状态
+- stateId: step4_episode_outline
+- stateLabel: 分集大纲
+- script_type: 小说转剧本
+- expected_episode_count: <数字>
 
 ## 第4步 分集大纲
+
+
 按 `expected_episode_count` 输出第1集到第N集，每集包含：
 - 核心事件
 - 卡点/反转
@@ -51,20 +54,21 @@ Follow the instructions below exactly when this skill is selected.
   "title": "请确认当前分集大纲",
   "actions": [
     {
-      "id": "approve",
+      "id": "confirm",
       "label": "确认并继续",
       "kind": "send",
-      "payload": "workflow_action=approve\nstateId=step4_episode_outline"
+      "payload": "interaction_action=confirm\nstateId=step4_episode_outline"
     },
     {
       "id": "revise",
       "label": "提出修改",
       "kind": "prefill",
-      "payload": "workflow_action=revise\nstateId=step4_episode_outline\nstep_feedback="
+      "payload": "interaction_action=revise\nstateId=step4_episode_outline\nstep_feedback="
     }
   ]
 }
 </fun_claw_interaction>
+
 ## 错误输出格式（固定）
 ```json
 {

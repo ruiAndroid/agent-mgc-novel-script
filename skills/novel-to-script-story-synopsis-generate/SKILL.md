@@ -4,7 +4,7 @@
 小说转剧本：第2步故事梗概生成（可确认）。
 
 ## Version
-3.0.0
+3.2.0
 
 ## Instructions
 Follow the instructions below exactly when this skill is selected.
@@ -25,14 +25,17 @@ Follow the instructions below exactly when this skill is selected.
 支持 `key=value` 与 `key: value`；支持键名同义归一化（`scriptType` 等）。
 
 ## 输出格式（固定）
-[STEP_ID]: step2_story_synopsis
-[STEP_STATUS]: draft
-[SCRIPT_TYPE]: 小说转剧本
-[EXPECTED_EPISODE_COUNT]: <数字>
-[NEXT_STEP]: step3_character_profile
-[USER_CONFIRM_REQUIRED]: true
+正文必须按以下结构输出，且不得再输出 [STEP_ID] / [STEP_STATUS] / [USER_CONFIRM_REQUIRED] / [NEXT_STEP] 等旧格式字段：
+
+# 当前状态
+- stateId: step2_story_synopsis
+- stateLabel: 故事梗概
+- script_type: 小说转剧本
+- expected_episode_count: <数字>
 
 ## 第2步 故事梗概
+
+
 - 250-450字，保持原小说主冲突与人物动机。
 
 ## 主线大纲
@@ -54,20 +57,21 @@ Follow the instructions below exactly when this skill is selected.
   "title": "请确认当前故事梗概",
   "actions": [
     {
-      "id": "approve",
+      "id": "confirm",
       "label": "确认并继续",
       "kind": "send",
-      "payload": "workflow_action=approve\nstateId=step2_story_synopsis"
+      "payload": "interaction_action=confirm\nstateId=step2_story_synopsis"
     },
     {
       "id": "revise",
       "label": "提出修改",
       "kind": "prefill",
-      "payload": "workflow_action=revise\nstateId=step2_story_synopsis\nstep_feedback="
+      "payload": "interaction_action=revise\nstateId=step2_story_synopsis\nstep_feedback="
     }
   ]
 }
 </fun_claw_interaction>
+
 ## 错误输出格式（固定）
 ```json
 {
