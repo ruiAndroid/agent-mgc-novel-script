@@ -1,4 +1,4 @@
-﻿# novel-to-script-episode-outline-generate
+# novel-to-script-episode-outline-generate
 
 ## Description
 小说转剧本：第4步分集大纲生成（可确认）。
@@ -40,10 +40,31 @@ Follow the instructions below exactly when this skill is selected.
 - 卡点/反转
 - 集末钩子
 
-## 用户确认
-- 确认通过：`确认第4步`
-- 需要重生成：`第4步重生成：<修改意见>`
+## 交互协议（固定）
+正文末尾必须紧跟以下协议块，不得再额外输出“确认第X步”或“第X步重生成”之类的自然语言指令：
 
+<fun_claw_interaction>
+{
+  "version": "1.0",
+  "type": "approval_request",
+  "stateId": "step4_episode_outline",
+  "title": "请确认当前分集大纲",
+  "actions": [
+    {
+      "id": "approve",
+      "label": "确认并继续",
+      "kind": "send",
+      "payload": "workflow_action=approve\nstateId=step4_episode_outline"
+    },
+    {
+      "id": "revise",
+      "label": "提出修改",
+      "kind": "prefill",
+      "payload": "workflow_action=revise\nstateId=step4_episode_outline\nstep_feedback="
+    }
+  ]
+}
+</fun_claw_interaction>
 ## 错误输出格式（固定）
 ```json
 {

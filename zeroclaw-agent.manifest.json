@@ -3,6 +3,7 @@
     "mode":  "managed",
     "runtime":  "zeroclaw",
     "agentic":  false,
+    "interaction_protocol":  "fun-claw-interaction/v1",
     "entry_skill":  "novel-to-script-main",
     "skills_dir":  "/workspace/agent-mgc-novel-script/skills",
     "skills":  [

@@ -41,6 +41,29 @@ prompt_injection_mode = "full"
 - `target_audience`
 - `expected_episode_count`
 
+## 交互协议
+
+当前仓库约定多轮确认类回复使用平台通用交互协议：
+
+- `fun-claw-interaction/v1`
+
+在 `interactive` 模式下，正文末尾追加：
+
+```text
+<fun_claw_interaction>
+{ ...JSON... }
+</fun_claw_interaction>
+```
+
+协议块用于声明：
+
+- 当前状态 `state_id`
+- 是否需要用户确认
+- 可执行动作 `actions`
+- 点击后回传的 `payload`
+
+平台前端只解析该协议块，不应依赖具体业务文案。
+
 ## 技能格式
 
 当前仓库使用 ZeroClaw 可识别的目录技能格式：

@@ -1,4 +1,4 @@
-﻿# one-line-script-story-synopsis-generate
+# one-line-script-story-synopsis-generate
 
 ## Description
 一句话剧本：第2步故事梗概生成（可确认）。
@@ -43,10 +43,31 @@ Follow the instructions below exactly when this skill is selected.
 ## 开篇钩子
 - 60-120字。
 
-## 用户确认
-- 确认通过：`确认第2步`
-- 需要重生成：`第2步重生成：<修改意见>`
+## 交互协议（固定）
+正文末尾必须紧跟以下协议块，不得再额外输出“确认第X步”或“第X步重生成”之类的自然语言指令：
 
+<fun_claw_interaction>
+{
+  "version": "1.0",
+  "type": "approval_request",
+  "stateId": "step2_story_synopsis",
+  "title": "请确认当前故事梗概",
+  "actions": [
+    {
+      "id": "approve",
+      "label": "确认并继续",
+      "kind": "send",
+      "payload": "workflow_action=approve\nstateId=step2_story_synopsis"
+    },
+    {
+      "id": "revise",
+      "label": "提出修改",
+      "kind": "prefill",
+      "payload": "workflow_action=revise\nstateId=step2_story_synopsis\nstep_feedback="
+    }
+  ]
+}
+</fun_claw_interaction>
 ## 错误输出格式（固定）
 ```json
 {

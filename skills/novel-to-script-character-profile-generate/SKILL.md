@@ -1,4 +1,4 @@
-﻿# novel-to-script-character-profile-generate
+# novel-to-script-character-profile-generate
 
 ## Description
 小说转剧本：第3步角色设定生成（可确认）。
@@ -49,10 +49,31 @@ Follow the instructions below exactly when this skill is selected.
 ### 主要角色
 ### 次要角色
 
-## 用户确认
-- 确认通过：`确认第3步`
-- 需要重生成：`第3步重生成：<修改意见>`
+## 交互协议（固定）
+正文末尾必须紧跟以下协议块，不得再额外输出“确认第X步”或“第X步重生成”之类的自然语言指令：
 
+<fun_claw_interaction>
+{
+  "version": "1.0",
+  "type": "approval_request",
+  "stateId": "step3_character_profile",
+  "title": "请确认当前角色设定",
+  "actions": [
+    {
+      "id": "approve",
+      "label": "确认并继续",
+      "kind": "send",
+      "payload": "workflow_action=approve\nstateId=step3_character_profile"
+    },
+    {
+      "id": "revise",
+      "label": "提出修改",
+      "kind": "prefill",
+      "payload": "workflow_action=revise\nstateId=step3_character_profile\nstep_feedback="
+    }
+  ]
+}
+</fun_claw_interaction>
 ## 错误输出格式（固定）
 ```json
 {
