@@ -3,7 +3,7 @@
     "mode":  "managed",
     "runtime":  "zeroclaw",
     "entry_skill":  "novel-to-script-main",
-    "skills_dir":  "./skills",
+    "skills_dir":  "/workspace/agent-mgc-novel-script/skills",
     "skills":  [
                    "novel-to-script-story-synopsis-generate",
                    "novel-to-script-character-profile-generate",
