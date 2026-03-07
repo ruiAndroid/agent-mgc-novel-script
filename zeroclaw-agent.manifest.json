@@ -2,6 +2,7 @@
     "agent_id":  "mgc-novel-to-script",
     "mode":  "managed",
     "runtime":  "zeroclaw",
+    "agentic":  false,
     "entry_skill":  "novel-to-script-main",
     "skills_dir":  "/workspace/agent-mgc-novel-script/skills",
     "skills":  [
