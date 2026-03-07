@@ -20,10 +20,43 @@
 在 ZeroClaw `config.toml` 中启用 open skills：
 
 ```toml
+[autonomy]
+cli_excluded_tools = [
+  "shell",
+  "file_read",
+  "file_write",
+  "file_edit",
+  "glob_search",
+  "content_search",
+  "cron_add",
+  "cron_list",
+  "cron_remove",
+  "cron_update",
+  "cron_run",
+  "cron_runs",
+  "memory_store",
+  "memory_recall",
+  "memory_forget",
+  "schedule",
+  "model_routing_config",
+  "proxy_config",
+  "git_operations",
+  "pushover",
+  "pdf_read",
+  "screenshot",
+  "image_info",
+  "browser_open",
+  "browser",
+  "http_request",
+  "web_fetch",
+  "web_search_tool",
+  "composio",
+]
+
 [skills]
 open_skills_enabled = true
 open_skills_dir = "/workspace/agent-mgc-novel-script/skills"
-prompt_injection_mode = "full"
+prompt_injection_mode = "compact"
 ```
 
 ## 入口技能
