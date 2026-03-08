@@ -60,13 +60,13 @@ Follow the instructions below exactly when this skill is selected.
       "id": "confirm",
       "label": "确认并继续",
       "kind": "send",
-      "payload": "interaction_action=confirm\nstateId=step2_story_synopsis"
+      "payload": "interaction_action=confirm\nstateId=step2_story_synopsis\nscript_type=<当前script_type>\nscript_content=<当前script_content>\ntarget_audience=<当前target_audience>\nexpected_episode_count=<当前expected_episode_count>"
     },
     {
       "id": "revise",
       "label": "提出修改",
       "kind": "prefill",
-      "payload": "interaction_action=revise\nstateId=step2_story_synopsis\nstep_feedback="
+      "payload": "interaction_action=revise\nstateId=step2_story_synopsis\nscript_type=<当前script_type>\nscript_content=<当前script_content>\ntarget_audience=<当前target_audience>\nexpected_episode_count=<当前expected_episode_count>\nstep_feedback="
     }
   ]
 }

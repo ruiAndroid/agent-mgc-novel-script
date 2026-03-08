@@ -19,6 +19,7 @@
 3. `delegate.prompt` 必须逐字透传当前用户原始消息全文，不得改写、翻译、补字段。
 4. `delegate` 返回后不得再调用任何工具。
 5. 命中本规则时，必须立刻发起 `delegate`；禁止在工具调用前输出任何分析、解释、复述或过渡文本。
+6. 若当前用户消息是交互 payload，则其中携带的 `script_type`、`script_content`、`target_audience`、`expected_episode_count` 也属于原始消息的一部分，必须完整透传，不得裁剪。
 
 ## 输出规则
 - `delegate` 返回非空文本：原样透传。

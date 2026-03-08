@@ -71,7 +71,12 @@
 ## 交互协议
 - 协议块必须是正文最后一段。
 - 协议块必须是合法 JSON。
-- `actions[*].payload` 必须使用 `interaction_action` + `stateId`。
+- `actions[*].payload` 必须使用 `interaction_action` + `stateId`，并且必须同时携带完整的归一化输入字段：
+  - `script_type`
+  - `script_content`
+  - `target_audience`
+  - `expected_episode_count`
+- 以上 4 个字段在所有需要用户确认/修改的状态里都不得省略，哪怕当前正文中做了压缩展示。
 - `payload` 里的换行必须写成 JSON 转义后的 `\\n`，禁止把裸换行直接写进 JSON 字符串。
 - 动作只允许：
   - `confirm`
@@ -90,13 +95,13 @@
       "id": "confirm",
       "label": "确认并继续",
       "kind": "send",
-      "payload": "interaction_action=confirm\\nstateId=<当前状态ID>"
+      "payload": "interaction_action=confirm\\nstateId=<当前状态ID>\\nscript_type=<当前script_type>\\nscript_content=<当前script_content>\\ntarget_audience=<当前target_audience>\\nexpected_episode_count=<当前expected_episode_count>"
     },
     {
       "id": "revise",
       "label": "提出修改",
       "kind": "prefill",
-      "payload": "interaction_action=revise\\nstateId=<当前状态ID>\\nstep_feedback="
+      "payload": "interaction_action=revise\\nstateId=<当前状态ID>\\nscript_type=<当前script_type>\\nscript_content=<当前script_content>\\ntarget_audience=<当前target_audience>\\nexpected_episode_count=<当前expected_episode_count>\\nstep_feedback="
     }
   ]
 }
