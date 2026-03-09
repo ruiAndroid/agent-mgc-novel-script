@@ -4,7 +4,7 @@
 剧本生成主技能：负责输入解析、状态推进、子技能路由与交互协议输出。
 
 ## Version
-3.3.1
+3.4.0
 
 ## Instructions
 Follow the instructions below exactly when this skill is selected.
@@ -45,9 +45,16 @@ Follow the instructions below exactly when this skill is selected.
   - `step2_story_synopsis` -> `step3_character_profile`
   - `step3_character_profile` -> `step4_episode_outline`
   - `step4_episode_outline` -> `step5_full_script`
+- `step5_full_script` 是最终创作状态
+- 当当前 `stateId=step5_full_script` 且 `interaction_action=confirm` 时：
+  - 仅输出 1 到 2 句简短完成确认
+  - 不再推进下一状态
+  - 不输出 `<fun_claw_interaction>...</fun_claw_interaction>`
 - `revise`：仅重生成当前 `stateId`
 - `revise` 没有反馈内容时返回错误 JSON
 - `expected_episode_count` 必须在所有状态中保持一致
+- 当 `step5_full_script` 已确认完成后，若用户新消息不包含 `interaction_action` / `stateId`，且语义属于感谢、满意、夸赞、结束语或寒暄，则直接输出 1 到 2 句简短收尾，不再进入状态机，也不输出 `<fun_claw_interaction>...</fun_claw_interaction>`
+- 当 `step5_full_script` 已确认完成后，若用户新消息不包含 `interaction_action` / `stateId`，但语义包含对当前成品的明确修改意见，则按对 `step5_full_script` 的 `revise` 处理
 
 ## 输出要求
 `interactive` 模式每轮只能输出一个状态，正文结构固定为：
@@ -57,6 +64,12 @@ Follow the instructions below exactly when this skill is selected.
 - 正文最后的 `<fun_claw_interaction>...</fun_claw_interaction>`
 
 `strict` 模式可一次输出全部状态。
+
+以下终态例外场景不使用上述固定结构，可直接输出纯文本：
+- `step5_full_script` 确认完成时的完成确认
+- `step5_full_script` 完成后的轻量收尾消息
+
+以上纯文本输出必须控制在 1 到 2 句内，且不得附带 `<fun_claw_interaction>...</fun_claw_interaction>`。
 
 ### `step1_input_parse` 压缩要求
 - `step1_input_parse` 只做输入校验、归一化与确认，不做正文创作。
@@ -77,6 +90,7 @@ Follow the instructions below exactly when this skill is selected.
 ## 交互协议
 - 协议块必须是正文最后一段。
 - 协议块必须是合法 JSON。
+- 协议块仅用于仍需用户确认或修改的状态；终态完成确认与轻量收尾不得输出协议块。
 - `payload` 只能使用：
   - `interaction_action=confirm\\nstateId=<当前状态ID>`
   - `interaction_action=revise\\nstateId=<当前状态ID>\\nstep_feedback=`
@@ -111,6 +125,7 @@ Follow the instructions below exactly when this skill is selected.
 - 禁止输出旧格式：`user_confirm_required` / `next_step` / `[STEP_ID]` / `[STEP_STATUS]` / `[USER_CONFIRM_REQUIRED]`
 - 禁止输出“请回复确认第X步”“第X步重生成”之类的自然语言按钮说明
 - 禁止未确认就推进下一状态
+- 禁止在终态轻量消息中输出规则解释、状态分析、过程思考，或“根据规则”“我应该”“让我”之类的决策文本
 
 ## 错误输出
 ```json

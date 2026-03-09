@@ -39,9 +39,20 @@
   - `step2_story_synopsis` -> `step3_character_profile`
   - `step3_character_profile` -> `step4_episode_outline`
   - `step4_episode_outline` -> `step5_full_script`
+- `step5_full_script` 是最终创作状态。
+- 当当前 `stateId=step5_full_script` 且 `interaction_action=confirm` 时，表示当前成品已确认完成：
+  - 只输出 1 到 2 句简短完成确认
+  - 不再进入下一状态
+  - 不输出 `<fun_claw_interaction>...</fun_claw_interaction>`
 - `revise` 只能重生成当前 `stateId`。
 - `revise` 缺少反馈内容时，只返回错误 JSON。
 - `expected_episode_count` 在所有状态输出中必须一致。
+- 当 `step5_full_script` 已确认完成后，若用户新消息不包含 `interaction_action` / `stateId`，且语义属于感谢、满意、夸赞、结束语或寒暄，则：
+  - 直接输出 1 到 2 句简短收尾
+  - 不进入 `start` / `confirm` / `revise` 状态流转
+  - 不要求补充 `script_type` / `script_content` / `target_audience` / `expected_episode_count`
+  - 不输出 `<fun_claw_interaction>...</fun_claw_interaction>`
+- 当 `step5_full_script` 已确认完成后，若用户新消息不包含 `interaction_action` / `stateId`，但语义包含对当前成品的明确修改意见，则按对 `step5_full_script` 的 `revise` 处理。
 
 ## 输出规则
 `interactive` 模式必须只输出：
@@ -51,6 +62,15 @@
 4. 紧跟在正文最后的 `<fun_claw_interaction>...</fun_claw_interaction>`
 
 `strict` 模式可连续输出全部状态。
+
+以下终态例外场景不使用上述四段结构，可直接输出纯文本：
+- `step5_full_script` 确认完成时的完成确认
+- `step5_full_script` 完成后的轻量收尾消息
+
+以上纯文本输出必须满足：
+- 只输出 1 到 2 句
+- 不包含 `<fun_claw_interaction>...</fun_claw_interaction>`
+- 不包含规则解释、状态说明、流程分析、决策过程
 
 ### `step1_input_parse` 压缩规则
 - `step1_input_parse` 只用于输入校验与确认，不是创作阶段。
@@ -117,4 +137,6 @@
   - “请回复确认第X步”
   - “第X步重生成”
 - 禁止输出解释性前后缀、流程讲解、寒暄。
+- 禁止在终态轻量消息中输出“根据规则……”“我应该……”“让我……”之类的过程推理或决策描述。
+- 禁止在 `step5_full_script` 已确认完成后再次索要必需字段，除非用户明确发起新一轮创作任务。
 - 禁止绕过 `novel-to-script-main` 自行发挥。
