@@ -6,7 +6,7 @@
 
 ## 目录
 
-- `zeroclaw-agent.manifest.json`
+- `agent.minifest.json`
 - `skills/<skill_id>/SKILL.md`（每个技能一个目录）
 - `scripts/json-skills-to-skill-md.ps1`（JSON 技能迁移脚本）
 
@@ -116,3 +116,5 @@ prompt_injection_mode = "compact"
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\json-skills-to-skill-md.ps1 -Overwrite -RemoveSource
 ```
+
+
